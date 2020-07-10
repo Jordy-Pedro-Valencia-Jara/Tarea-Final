@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Crear Destino Turistico</title>
+</head>
+<body>
+    <form action="createimg" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <input type="text" name="Name" placeholder="Nombre del destino"><br>
+        <input type="file" name="Direccion" ><br>
+        <textarea name="Descripcion"  cols="30" rows="4" placeholder="Descripcion del lugar"></textarea><br>
+        <input type="number" name="Precio" placeholder="Precio"><br>
+        <input type="checkbox" name="Oferta" >
+        <label> Offerta</label><br>
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>

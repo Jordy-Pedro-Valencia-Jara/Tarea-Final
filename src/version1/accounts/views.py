@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
+from travello.models import Destination
+
 # Create your views here.
 def login(request):
     if request.method=='POST':
@@ -45,3 +47,52 @@ def register (request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+def createimg(request):
+    print('crear imagen')
+    if request.method=='POST':
+        print('creado con post')
+        Name=request.POST['Name']
+        Direccion=request.FILES['Direccion']
+        Descripcion=request.POST['Descripcion']
+        Precio=request.POST['Precio']
+        Oferta=request.POST.get('Oferta',False)
+        print(Name)
+        print(Direccion)
+        print(Descripcion)
+        print(Precio)
+        if Oferta=='on':
+            Oferta=True
+        else :
+            Oferta=False
+        imgs=Destination.objects.create(name=Name,img=Direccion,desc=Descripcion,price=Precio,offer=Oferta)
+        imgs.save()
+        print('destino agregado')
+        dests=Destination.objects.all()
+
+        
+    return render (request,'createimg.html')
+def eliminar(request,id):
+    data=Destination.objects.get(id=id)
+    data.delete()
+    return redirect(to='listar')
+def modificar(request,id):
+    data=Destination.objects.get(id=id)
+    if request.method=='POST':
+        data=Destination()
+        data.id=request.POST['textid']
+        data.name=request.POST['Name']
+        data.img=request.FILES['Direccion']
+        data.desc=request.POST['Descripcion']
+        data.price=request.POST['Precio']
+        data.offer=request.POST.get('Oferta',False)
+        if data.offer=='on':
+            data.offer=True
+        else :
+            data.offer=False
+        data.save()
+        return redirect('listar')
+    return render(request,'modificar.html',{'data':data,})
+def listar(request):
+    data=Destination.objects.all()
+    return render(request,'listar.html',{'data':data,})
+
